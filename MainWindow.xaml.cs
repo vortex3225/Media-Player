@@ -160,6 +160,13 @@ namespace Media_Player
         public void Shuffle() // shuffles playlist items using the fisher-yates shuffle
         {
             Random random = new Random();
+            if (previous_order.Count <= 0)
+            {
+                foreach (ListViewItem x in playlist_contents.Items)
+                {
+                    previous_order.Add(x);
+                }
+            }
             playlist_contents.Items.Clear();
             List<ListViewItem> copy = new List<ListViewItem>(previous_order);
             for (int i = 0; i < previous_order.Count - 1; i++)
@@ -726,7 +733,7 @@ namespace Media_Player
                         Source = new BitmapImage(new Uri("/Sprites/shuffle_triggered.png", UriKind.RelativeOrAbsolute))
                     };
                 }
-                else
+                else if (is_shuffled && previous_order.Count > 0)
                 {
                     is_shuffled = false;
                     string file_name = media_title_display.Text;

@@ -213,7 +213,7 @@ namespace Media_Player.Objects {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Media Player;V1.0.0.0;component/pages/playlistpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Media Player;component/pages/playlistpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Pages\PlaylistPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

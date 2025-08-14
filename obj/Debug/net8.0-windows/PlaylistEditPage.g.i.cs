@@ -85,7 +85,7 @@ namespace Media_Player {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Media Player;V1.0.0.0;component/playlisteditpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Media Player;component/playlisteditpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\PlaylistEditPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
