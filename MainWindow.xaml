@@ -1,0 +1,95 @@
+﻿<Window x:Class="Media_Player.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Media_Player"
+        mc:Ignorable="d"
+        Icon="/Sprites/media_player.ico"
+        Title="Media Player" Height="550" Width="950">
+    <DockPanel LastChildFill="False">
+        <Menu DockPanel.Dock="Top" Background="White">
+            <MenuItem x:Name="file_menu_btn" Header="File">
+                <MenuItem x:Name="open_file_menu_btn" Header="Open File" Click="open_file_menu_btn_Click"/>
+                <MenuItem x:Name="open_folder_menu_btn" Header="Open Folder" Click="open_folder_menu_btn_Click"/>
+                <MenuItem x:Name="clear_menu_btn" Header="Clear opened files" Click="clear_menu_btn_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="options_menu_btn" Header="Options">
+                <MenuItem x:Name="change_menu_btn" Header="Change Options" Click="options_menu_btn_Click"/>
+                <MenuItem x:Name="clear_saved_options_menu_btn" Click="clear_saved_options_menu_btn_Click" Header="Clear saved options" Icon="/Sprites/bin_brush.png"/>
+            </MenuItem>
+            <MenuItem Header="Playlists">
+                <MenuItem x:Name="open_playlist_menu_btn" Click="open_playlist_menu_btn_Click" Header="View"/>
+                <MenuItem x:Name="return_menu_btn" Header="Return to media player" Icon="./Sprites/1x1_invis_icon.ico" Click="return_menu_btn_Click"/>
+                <MenuItem x:Name="play_from_playlist_menu_btn" Header="Play from playlist" Icon="./Sprites/1x1_invis_icon.ico" Click="play_from_playlist_menu_btn_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="info_menu_btn" Header="Help" Click="info_menu_btn_Click"/>
+        </Menu>
+        <Viewbox Stretch="Uniform">
+            <Grid Width="950" Height="515">
+                <Canvas Visibility="Visible" x:Name="media_controls">
+                    <TextBox x:Name="opened_searchbox" FontFamily="Arial" FontSize="13" TextAlignment="Center" TextChanged="opened_searchbox_TextChanged" HorizontalAlignment="Center" VerticalAlignment="Top" Width="211" Canvas.Left="739" Canvas.Top="18" Height="17" UndoLimit="0"/>
+                    <ListView x:Name="playlist_contents" SelectionChanged="playlist_contents_SelectionChanged" Height="445" Width="211" HorizontalAlignment="Center" Canvas.Left="739" VerticalAlignment="Top" Canvas.Top="39"/>
+                    <TextBlock x:Name="playlist_items_display" TextAlignment="Center" Text="Items: 0" FontFamily="Arial" FontSize="12" Canvas.Left="739" Canvas.Top="488" HorizontalAlignment="Left" VerticalAlignment="Center" Width="211"/>
+                    <Canvas Height="318" Width="672" Canvas.Left="46" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <MediaElement x:Name="video_out_display" Visibility="Visible" MediaOpened="video_out_display_MediaOpened" Source="" Height="318" MediaEnded="Video_out_display_MediaEnded" Width="672"/>
+                        <Image Visibility="Hidden" x:Name="audio_file_image_display" Width="252" Height="252" Canvas.Left="210" Source="/Sprites/audio_file_image.png" Canvas.Top="33"/>
+                        <TextBlock Visibility="Hidden" x:Name="audio_file_extension_display"  FontFamily="Segoe Inter" FontSize="35" TextAlignment="Left" Text="unknown" Canvas.Left="425" Canvas.Top="243" Height="40" Width="237" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Canvas>
+                    <StackPanel x:Name="media_info_panel" Orientation="Vertical" Height="49" Width="632" Canvas.Left="66" Canvas.Top="333" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <TextBlock x:Name="media_title_display" FontFamily="Arial" FontWeight="Bold" FontSize="15" Text="No media file opened" TextAlignment="Center" Height="17"/>
+                        <TextBlock x:Name="playlist_display" Visibility="Visible" IsEnabled="True" FontFamily="Arial" FontSize="11" TextAlignment="Center" Text="No playlist selected" Margin="0, 1, 0, 0" Height="17"/>
+                        <TextBlock x:Name="song_plays_display" Visibility="Hidden" IsEnabled="False" FontFamily="Arial" FontSize="11" TextAlignment="Center" Text="0 plays" Margin="0, 1, 0, 0" Height="17"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="volume_panel" Height="23" Width="602" Canvas.Left="75" Canvas.Top="382" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <TextBlock x:Name="volume_display" Text="Volume: 15" FontSize="14" TextAlignment="Center" FontFamily="Arial" Height="18" Width="84"/>
+                        <Slider x:Name="volume_slider" ValueChanged="volume_slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="1" Value="15" Width="468" Height="18"/>
+                        <Button x:Name="mute_unmute_btn" Width="47" Background="Transparent" Click="mute_unmute_btn_Click" BorderThickness="0">
+                            <Image>
+                                <Image.Source>./Sprites/unmute.png</Image.Source>
+                            </Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="media_positon_panel" Height="22" Width="594" Canvas.Left="106" Canvas.Top="419" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock x:Name="current_pos_display" Text="00:00" FontFamily="Arial" FontSize="16" Width="39" Height="17"/>
+                        <Slider x:Name="media_position_slider" PreviewMouseDown="media_position_slider_PreviewMouseDown" PreviewMouseUp="media_position_slider_PreviewMouseUp" Minimum="0" Maximum="100" Value="0" Margin="15, 0, 0, 0" VerticalAlignment="Center" Width="443" Canvas.Left="120" Canvas.Top="376"/>
+                        <TextBlock x:Name="total_pos_display" Margin="15, 0, 0, 0" Text="00:00" FontFamily="Arial" FontSize="16" Width="78" Height="18"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="playback_buttons_frame" Height="50" Width="568" Canvas.Left="98" Canvas.Top="459" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Button x:Name="previous_song_btn" Click="previous_song_btn_Click" BorderThickness="0" Width="55" Background="Transparent" Height="40">
+                            <Image>
+                                <Image.Source>./Sprites/previous.png</Image.Source>
+                            </Image>
+                        </Button>
+                        <Button x:Name="rewind_current_song_btn" Click="rewind_current_song_btn_Click" BorderThickness="0" Width="55" Height="40" Background="Transparent" Margin="35, 0, 0, 0">
+                            <Image>
+                                <Image.Source>./Sprites/rewind.png</Image.Source>
+                            </Image>
+                        </Button>
+                        <Button x:Name="repeat_btn" Click="repeat_btn_Click" BorderThickness="0" Width="55" Height="40" Background="Transparent" Margin="35, 0, 0, 0">
+                            <Image>
+                                <Image.Source>./Sprites/repeat_untriggered.png</Image.Source>
+                            </Image>
+                        </Button>
+                        <Button x:Name="pause_btn" BorderThickness="0" Width="55" Height="40" Click="pause_btn_Click" Background="Transparent" Margin="35, 0, 0, 0">
+                            <Image>
+                                <Image.Source>./Sprites/play.png</Image.Source>
+                            </Image>
+                        </Button>
+                        <Button x:Name="shuffle_btn" BorderThickness="0" Width="55" Height="40" Click="shuffle_btn_Click" Background="Transparent" Margin="35, 0, 0, 0">
+                            <Image>
+                                <Image.Source>./Sprites/shuffle_untriggered.png</Image.Source>
+                            </Image>
+                        </Button>
+                        <Button x:Name="skip_song_btn" BorderThickness="0" Width="55" Click="skip_song_btn_Click" Background="Transparent" Height="40" Margin="100, 0, 0, 0">
+                            <Image>
+                                <Image.Source>./Sprites/skip.png</Image.Source>
+                            </Image>
+                        </Button>
+                    </StackPanel>
+                </Canvas>
+                <Frame Width="950" Visibility="Hidden" NavigationUIVisibility="Hidden" x:Name="page_display_frame"/>
+            </Grid>
+        </Viewbox>
+    </DockPanel>
+</Window>
