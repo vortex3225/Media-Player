@@ -769,14 +769,15 @@ namespace Media_Player
                 if (!is_shuffled)
                 {
                     is_shuffled = true;
-                    string p = video_out_display.Source.LocalPath;
+                    string p = null;
+                    if (is_looping) p = video_out_display.Source.LocalPath;
                     Shuffle();
                     if (is_looping)
                     {
                         int x = 0;
                         foreach (ListViewItem item in playlist_contents.Items)
                         {
-                            if (p.Contains(item.Content.ToString()))
+                            if (!string.IsNullOrEmpty(p) && p.Contains(item.Content.ToString()))
                             {
                                 current_file_index = x;
                                 break;
